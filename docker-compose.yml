@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  game-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: gameforge/server:0.1.0
+    container_name: gameforge-server
+    ports:
+      - "7777:7777"
+    environment:
+      GF_LOG_LEVEL: INFO
+      GF_TICK_RATE: "60"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket;s=socket.socket();s.settimeout(2);s.connect(('localhost',7777));s.close()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: gameforge-cache
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+    image: gameforge/test:0.1.0
+    profiles: ["ci"]
+    depends_on:
+      - game-server
