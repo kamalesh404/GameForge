@@ -1,0 +1,15 @@
+# Runtime dependencies
+pygame-ce>=2.5
+numpy>=1.26
+
+# Optional scripting backend
+# lupa>=2.0
+
+# Development / test tooling
+pytest>=8.0
+pytest-cov>=5.0
+mypy>=1.10
+black>=24.4
+flake8>=7.0
+isort>=5.13
+build>=1.2
