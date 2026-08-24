@@ -1,0 +1,1 @@
+"""GameForge test suite."""
